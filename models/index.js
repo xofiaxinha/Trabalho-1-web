@@ -10,4 +10,4 @@ db.sync();
 module.exports = {
     db,
     Pokemon,
-    };
+};

@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (db, DataTypes) => {
     const Pokemon = db.define('Pokemon', {
         name: {
             type: DataTypes.STRING,
@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         }
+    },
+    {
+        tableName: 'pokemons',  // Nome exato da tabela
+        schema: 'public', 
     });
     return Pokemon;
 }
