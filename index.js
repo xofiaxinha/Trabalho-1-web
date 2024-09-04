@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 const routes = require('./routes/rotas');
 const Pokemon = require('./models/pokemon');
 const Sequelize = require('sequelize');

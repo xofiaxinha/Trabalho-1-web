@@ -4,9 +4,6 @@ router.use(express.json())
 //router.use(express.urlencoded({extended: true}));
 const { Pokemon } = require('../models');
 
-router.get('/', (req, res) => {
-    res.send('Hello World!');
-});
 router.get('/pokemon', async (req, res) => {
     const pokemons = await Pokemon.findAll();
     res.json(pokemons);
@@ -21,11 +18,11 @@ router.get('/pokemon/:num', async (req, res) => {
         res.status(404).send('Pokemon not found');
     }
 });
-router.post('/teste', async (req, res) => {
+router.post('/pokemon', async (req, res) => {
     try {
-      //console.log(req.body);
+      console.log(req.body);
       const {nome, tipo, level, numero, urlfoto} = req.body
-      console.log(nome);
+      console.log(nome, tipo, level, numero, urlfoto);
       const newPokemon = await Pokemon.create({name: nome, type: tipo, level: level, number: numero, imageURL: urlfoto});
       console.log(newPokemon);
       res.status(201).json(newPokemon);
@@ -36,12 +33,17 @@ router.post('/teste', async (req, res) => {
 });
 router.put('/pokemon/:num', async (req, res) => {
     const num = req.params.num;
-    const { nome, tipo, level, numero, urlfoto } = req.body
+    let updatedPokemon = await Pokemon.findAll({where: {number: num}});
+    const nome = req.body.nome || updatedPokemon.name;
+    const tipo = req.body.tipo || updatedPokemon.type;
+    const level = req.body.level || updatedPokemon.level;
+    const numero = req.body.numero || updatedPokemon.number;
+    const urlfoto = req.body.urlfoto || updatedPokemon.imageURL;
     try {
         const [updated] = await Pokemon.update({name: nome, type: tipo, level: level, number: numero, imageURL: urlfoto}, { where: { number: num } });
         console.log(updated);
         if (updated) {
-          const updatedPokemon = await Pokemon.findAll({where: {number: num}});
+          updatedPokemon = await Pokemon.findAll({where: {number: num}});
           res.status(200).json(updatedPokemon);
         } else {
           res.status(404).send('Pokémon não encontrado');
